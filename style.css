@@ -1,18 +1,18 @@
+
+body {
+    background-color: burlywood;
+}
+
 .cookie {
-    width: auto;
     cursor: pointer;
-    animation: cookie_apear 0.7s linear 1;
+    animation: cookie_apear 1s linear 1;
 }
 
 @keyframes cookie_apear {
 
-    0% {
-        scale: 0%;
-        color: transparent;
-    }
-
-    100% {
-        scale: 100%;
-        color: inherit;
+    from {
+        transform: scale(0);
+    } to {
+        transform: scale(1);
     }
 }
