@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toma Vergonha na cara</title>
+</head>
+<body>
+    <span>AAAAAAAAAA</span>
+    <button id="bobbo" onmouseenter="moveButton()"> lag </button>
+
+    <script>
+        let button = document.getElementById('bobbo');
+
+        //button.addEventListener("mouseenter")
+
+        function moveButton() {
+
+            button.style.position = 'absolute';
+            let posX = Math.random() * 100 +"%";
+            let posY = Math.random() * 100 +"%";
+
+            button.style.left = posX;
+            button.style.top = posY;
+        }
+
+    </script>
+</body>
+</html>
