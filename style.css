@@ -5,14 +5,23 @@ body {
 
 .cookie {
     cursor: pointer;
-    animation: cookie_apear 1s linear 1;
+    animation: grow 0.4s linear 1;
 }
 
-@keyframes cookie_apear {
+@keyframes grow {
 
-    from {
+    0% {
         transform: scale(0);
-    } to {
+        opacity: 0;
+    } 
+    68% {
+        transform: scale(1.1);
+        background-color: inherit;
+        opacity: 1;
+    }
+    100% {
         transform: scale(1);
+        background-color: inherit;
+        opacity: 1;
     }
 }
