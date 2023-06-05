@@ -4,25 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toma Vergonha na cara</title>
+    <title>Funny Clicker</title>
 </head>
 <body>
-    <span>AAAAAAAAAA</span>
-    <button id="bobbo" onmouseenter="moveButton()"> lag </button>
+    <span id="main_text" class="main_text">A Cookie has appeard, click it!</span>
+    <span id="score" class="score">0</span>
+    <img src="assets\images\cookie.png" id="cookie" onclick="clickCookie()" class="cookie"></img>
 
     <script>
-        let button = document.getElementById('bobbo');
+        let cookie = document.getElementById('cookie');
+        let score_text = document.getElementById('score');
+
+        let score = 0;
 
         //button.addEventListener("mouseenter")
 
-        function moveButton() {
-
-            button.style.position = 'absolute';
-            let posX = Math.random() * 100 +"%";
-            let posY = Math.random() * 100 +"%";
-
-            button.style.left = posX;
-            button.style.top = posY;
+        function clickCookie() {
+            score++;
+            score_text.textContent = score.toString();
         }
 
     </script>

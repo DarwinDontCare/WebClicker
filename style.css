@@ -1,0 +1,18 @@
+.cookie {
+    width: auto;
+    cursor: pointer;
+    animation: cookie_apear 0.7s linear 1;
+}
+
+@keyframes cookie_apear {
+
+    0% {
+        scale: 0%;
+        color: transparent;
+    }
+
+    100% {
+        scale: 100%;
+        color: inherit;
+    }
+}
