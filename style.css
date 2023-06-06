@@ -3,22 +3,38 @@ body {
     background-color: burlywood;
 }
 
-.cookie {
-    cursor: pointer;
-
+.cookie_container {
     position: absolute;
     top: 20%;
     left: 35%;
+}
+
+.cookie {
+    cursor: pointer;
 
     animation: grow 0.4s linear;
 }
 
+.main_text {
+    position: absolute;
+
+    text-align: center;
+
+    top: 110%;
+    left: 30%;
+}
+
+.score {
+    position: absolute;
+
+    text-align: center;
+
+    top: -10%;
+    left: 50%;
+}
+
 .cookie_clicked {
     cursor: pointer;
-
-    position: absolute;
-    top: 20%;
-    left: 35%;
 
     --current-rotation : 0deg;
 
