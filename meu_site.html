@@ -20,13 +20,23 @@
         let cookie_container = document.getElementById('cookie_container');
         let score_text = document.getElementById('score');
 
+        document.onmousemove = getMousePos;
+
+        let mousePos = null;
+
         let score = 0;
+
+        let timeoutID = null;
 
         let can_rotate = false;
 
         let rotation_angle = 0;
 
         //button.addEventListener("mouseenter")
+
+        function remove_cookie_class() {
+            cookie.classList.remove("cookie_clicked");
+        }
 
         function clickCookie() {
             score++;
@@ -37,11 +47,56 @@
 
             if (!can_rotate) can_rotate = true;
 
-            setTimeout(function() {
-                cookie.classList.remove("cookie_clicked");
-            }, 400);
+            timeoutID = setTimeout(remove_cookie_class, 400);
+            pop()
         }
 
+        function getMousePos (event) {
+            mousePos = event;
+        }
+
+        function pop() { 
+            for (let i = 0; i < 30; i++) {
+                createParticle(mousePos.clientX, mousePos.clientY);
+            }
+        }
+
+        function createParticle(x, y) {
+            const particle = document.createElement('img');
+
+            const destinationX = x + (Math.random() - 0.5) * 2 * 75;
+            const destinationY = y + (Math.random() - 0.5) * 2 * 75;
+
+            const size = Math.floor(Math.random() * 20 + 5);
+
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            particle.classList.add("cookie_particle");
+
+            particle.src = "assets/images/cookie.png";
+
+            const animation = particle.animate([
+                {
+                    transform: `translate(${x - (size / 2)}px, ${y - (size / 2)}px)`,
+                    opacity: 2
+                },
+                {
+                    transform: `translate(${destinationX}px, ${destinationY}px)`,
+                    opacity: 0
+                }
+            ], {
+                    duration: 500 + Math.random() * 1000,
+                    easing: 'cubic-bezier(0, .9, .57, 1)',
+                    delay: Math.random() * 200
+            });
+
+            document.body.appendChild(particle);
+
+            animation.onfinish = () => {
+                particle.remove();
+            };
+        }
 
         function rotateCookie() {
             if (can_rotate) {
