@@ -5,7 +5,39 @@ body {
 
 .cookie {
     cursor: pointer;
-    animation: grow 0.4s linear 1;
+
+    position: absolute;
+    top: 20%;
+    left: 35%;
+
+    animation: grow 0.4s linear;
+}
+
+.cookie_clicked {
+    cursor: pointer;
+
+    position: absolute;
+    top: 20%;
+    left: 35%;
+
+    --current-rotation : 0deg;
+
+    animation: click 0.2s linear;
+}
+
+@keyframes click {
+    0% {
+        transform: scale(1);
+        rotate : var(--current-rotation);
+    } 
+    35% {
+        transform: scale(1.1);
+        rotate : var(--current-rotation);
+    }
+    100% {
+        transform: scale(1);
+        rotate : var(--current-rotation);
+    }
 }
 
 @keyframes grow {
@@ -16,12 +48,10 @@ body {
     } 
     68% {
         transform: scale(1.1);
-        background-color: inherit;
         opacity: 1;
     }
     100% {
         transform: scale(1);
-        background-color: inherit;
         opacity: 1;
     }
 }
