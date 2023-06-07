@@ -10,7 +10,15 @@
 <body>
     <img id="menu_icon" class="menu_icon" src="assets\images\menu-regular-24.png" onclick="open_sidebar()"></img>
     <div id="sidebar" class="sidebar">
+        <span id="menu_text" class="menu_text">Objectives</span>
         <img id="close_menu" class="close_menu" src="assets\images\x-regular-24.png" onclick="open_sidebar()"></img>
+        <div id="content_holder" class="content_holder">
+            <ul id="objectives_list" class="objectives_list">
+                <li id="objective" class="objective" value="50">
+                    <span id="objective_text" class="objective_text">Click 50 times on the cookie</span>
+                </li>
+            </ul>
+        </div>
     </div>
     <div id="cookie_container" class="cookie_container">
         <img src="assets\images\cookie.png" id="cookie" onclick="clickCookie()" class="cookie">
@@ -27,7 +35,11 @@
 
         document.onmousemove = getMousePos;
 
+        let click_audio = new Audio('assets/audio/Menu Selection Sound Effec.mp4');
+
         let mousePos = null;
+
+        let multiplier = 1;
 
         let score = 0;
 
@@ -50,6 +62,18 @@
         function clickCookie() {
             score++;
             score_text.textContent = score.toString();
+            
+            let elements = document.getElementsByClassName("objective")
+
+            for (let i = 0; i < elements.length; i++) {
+                let element = elements[i];
+                if (score >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
+                    element.classList.add("completed");
+                    let console_text = element.firstChild.textContent + " - completed";
+                    console.log(console_text)
+                    generateObjectives(score, multiplier);
+                }
+            }
 
             if (!cookie.classList.contains("cookie_clicked")) cookie.classList.add("cookie_clicked");
             if (cookie.classList.contains("cookie")) cookie.classList.remove("cookie");
@@ -57,6 +81,8 @@
             if (!can_rotate) can_rotate = true;
 
             timeoutID = setTimeout(remove_cookie_class, 400);
+            click_audio.currentTime = 0.4;
+            click_audio.play();
             pop()
         }
 
@@ -68,6 +94,25 @@
             for (let i = 0; i < 30; i++) {
                 createParticle(mousePos.clientX, mousePos.clientY);
             }
+        }
+
+        function generateObjectives(score, multiplier) {
+            let objectiveValue = ((score + 50) * multiplier);
+
+            let newObjective = document.createElement('li');
+            newObjective.tagName = "objective";
+            newObjective.className = "objective";
+            newObjective.value = objectiveValue;
+
+            let objectiveText = document.createElement('span');
+            objectiveText.textContent = "Click " + objectiveValue + " times on the cookie";
+            objectiveText.tagName = "objective_text";
+            objectiveText.className = "objective_text";
+
+            newObjective.appendChild(objectiveText);
+            document.getElementById("objectives_list").appendChild(newObjective);
+
+            multiplier++;
         }
 
         function createParticle(x, y) {

@@ -28,6 +28,7 @@ body {
 }
 
 .close_menu {
+    cursor: pointer;
     position: absolute;
 
     height: 4%;
@@ -35,6 +36,50 @@ body {
 
     top: 1%;
     right: 2%;
+}
+
+.objective {
+    align-items: flex-start;
+}
+
+.completed {
+    list-style-image: url('assets/images/checkbox-checked-regular-24.png');
+}
+
+.objectives_list {
+    list-style-image: url('assets/images/checkbox-regular-24.png');
+}
+
+.content_holder {
+    background: rgb(179, 135, 104);
+    top: 0;
+    left: 0;
+
+    margin-top: 20%;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.objective_text {
+    font-family: "Arial";
+    font-size: large;
+
+    top: 0;
+
+    -webkit-text-fill-color: white;
+}
+
+.menu_text {
+    position: absolute;
+    text-align: center;
+    top: 1%;
+    left: 10%;
+    font-family: "Arial";
+    font-size: xx-large;
+
+    -webkit-text-fill-color: white;
 }
 
 .cookie {
