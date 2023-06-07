@@ -8,6 +8,10 @@
     <title>Funny Clicker</title>
 </head>
 <body>
+    <img id="menu_icon" class="menu_icon" src="assets\images\menu-regular-24.png" onclick="open_sidebar()"></img>
+    <div id="sidebar" class="sidebar">
+        <img id="close_menu" class="close_menu" src="assets\images\x-regular-24.png" onclick="open_sidebar()"></img>
+    </div>
     <div id="cookie_container" class="cookie_container">
         <img src="assets\images\cookie.png" id="cookie" onclick="clickCookie()" class="cookie">
             <span id="main_text" class="main_text">A Cookie has appeard, click it!</span>
@@ -19,6 +23,7 @@
         let cookie = document.getElementById('cookie');
         let cookie_container = document.getElementById('cookie_container');
         let score_text = document.getElementById('score');
+        let sidebar = document.getElementById("sidebar");
 
         document.onmousemove = getMousePos;
 
@@ -36,6 +41,10 @@
 
         function remove_cookie_class() {
             cookie.classList.remove("cookie_clicked");
+        }
+
+        function open_sidebar() {
+            sidebar.classList.toggle("open");
         }
 
         function clickCookie() {

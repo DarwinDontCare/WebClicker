@@ -1,6 +1,12 @@
 
 body {
-    background: radial-gradient(burlywood, chocolate);
+    background: repeating-linear-gradient(
+        to bottom,
+        rgb(121, 80, 50),
+        rgb(90, 64, 45) 50%,
+        rgb(201, 144, 106) 50%,
+        rgb(201, 144, 106)
+    );
 }
 
 .cookie_container {
@@ -8,13 +14,48 @@ body {
 
     position: absolute;
     top: 20%;
-    left: 35%;
+    left: 40%;
+}
+
+.menu_icon {
+    cursor: pointer;
+
+    height: 2%;
+    width: 2%;
+
+    top: 2%;
+    left: 2%;
+}
+
+.close_menu {
+    position: absolute;
+
+    height: 4%;
+    width: 13%;
+
+    top: 1%;
+    right: 2%;
 }
 
 .cookie {
     cursor: pointer;
 
     animation: grow 0.4s linear;
+}
+
+.sidebar {
+    position: absolute;
+    background: rgb(148, 110, 83);
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 15%;
+    box-shadow: 0 5px 5px rgb(51, 36, 26);
+    transition: all 0.5s ease;
+}
+
+.sidebar.open {
+    left: 0;
 }
 
 .main_text {
@@ -55,6 +96,8 @@ body {
     text-align: center;
 
     font-family: "Arial";
+
+    font-size: larger;
 
     -webkit-text-fill-color: white;
 
