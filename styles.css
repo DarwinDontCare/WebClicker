@@ -1,0 +1,113 @@
+body {
+    background-image: repeating-linear-gradient(
+        rgb(90, 64, 45) 0 0.3rem,
+        rgb(201, 144, 106) 0.3rem 0.8rem
+  );
+}
+
+* {
+    font-family: "Arial";
+    font-size: large;
+    -webkit-text-fill-color: white;
+}
+
+input {
+    -webkit-text-fill-color: black;
+}
+
+.login_title {
+    position: relative;
+
+    font-size: xx-large;
+    bottom: 2rem;
+}
+
+.login_title {
+    position: relative;
+
+    font-size: xx-large;
+    bottom: 2rem;
+}
+
+.login_container {
+    position: fixed;
+    text-align: center;
+
+    margin: 0;
+    padding: 0;
+
+    height: 100%;
+    width: 100%;
+}
+
+#Username{
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+#Password {
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+#ConfirmPassword {
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+#Email{
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+#log{
+    cursor: pointer;
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 17px;
+    padding-left: 7px;
+    color:white;
+}
+
+#register{
+    cursor: pointer;
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 17px;
+    padding-left: 7px;
+    color:white;
+}
+
+span{
+    color: white;
+    font-size: 17px;
+}
+
+.login_form {
+    text-align: center;
+    position: relative;
+    background-color: rgb(201, 144, 106);
+    width: 382px;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 10rem;
+    margin: 20 0 0 450px;
+    padding: 80px;
+    border-radius: 15px;
+    border: 5px solid rgb(90, 64, 45);
+    box-shadow: 5px 5px 5px rgb(48, 33, 23);
+}
