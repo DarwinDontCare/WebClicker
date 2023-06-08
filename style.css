@@ -1,11 +1,8 @@
 
 body {
-    background: repeating-linear-gradient(
-        to bottom,
-        rgb(121, 80, 50),
-        rgb(90, 64, 45) 50%,
-        rgb(201, 144, 106) 50%,
-        rgb(201, 144, 106)
+    background-image: repeating-linear-gradient(
+        rgb(90, 64, 45) 0 0.3rem,
+        rgb(201, 144, 106) 0.3rem 0.6rem
     );
 }
 

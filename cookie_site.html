@@ -26,6 +26,33 @@
             <span id="score" class="score">0</span>
         </img>
     </div>
+    
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+        import { getDatabase } from "https://cookiesite-e1b9c-default-rtdb.firebaseio.com/";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyBEdjIqnp-pYXlam8-xqb2HoUSsZC38oR8",
+          authDomain: "cookiesite-e1b9c.firebaseapp.com",
+          projectId: "cookiesite-e1b9c",
+          storageBucket: "cookiesite-e1b9c.appspot.com",
+          messagingSenderId: "1074669571083",
+          appId: "1:1074669571083:web:eea2691ebb494c993e8b0e",
+          measurementId: "G-JLNH44FY5J"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        const database = getDatabase(app);
+    </script>
 
     <script>
         let cookie = document.getElementById('cookie');
@@ -35,7 +62,7 @@
 
         document.onmousemove = getMousePos;
 
-        let click_audio = new Audio('assets/audio/Menu Selection Sound Effec.mp4');
+        let click_audio = new Audio('assets/audio/Menu Selection Sound Effec.mp4')
 
         let mousePos = null;
 
@@ -81,6 +108,7 @@
             if (!can_rotate) can_rotate = true;
 
             timeoutID = setTimeout(remove_cookie_class, 400);
+
             click_audio.currentTime = 0.4;
             click_audio.play();
             pop()
