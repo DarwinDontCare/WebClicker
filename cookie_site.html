@@ -10,6 +10,35 @@
 <body>
     <img id="menu_icon" class="menu_icon" src="assets\images\menu-regular-24.png"></img>
     <img id="user_icon" class="user_icon" src="assets\images\user-regular-24.png"></img>
+    <div id="user_info" class="user_info" style="visibility: hidden;">
+        <label>
+            <b>Username: </b>
+        </label>
+        <span id="username_span" class="username_span">Anonymus</span>
+        <br><br>
+        <label>
+            <b>Completed Goals: </b>
+        </label>
+        <span id="goals_span" class="goals_span">0</span>
+        <br><br>
+        <div id="leaderbord_holder" class="leaderbord_holder">
+            <ul id="leaderbord" class="leaderbord">
+                <li id="player" class="player">
+                    <span id="player_name" class="player_name">Anonymus</span>
+                    <br><br>
+                    <label>
+                        <b>Score: </b>
+                    </label>
+                    <span id="player_score" class="player_score">0</span>
+                    <br><br>
+                    <label>
+                        <b>Goals: </b>
+                    </label>
+                    <span id="completed_goals" class="completed_goals">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div id="sidebar" class="sidebar">
         <span id="menu_text" class="menu_text">Objectives</span>
         <img id="close_menu" class="close_menu" src="assets\images\x-regular-24.png"></img>
@@ -22,7 +51,7 @@
         </div>
     </div>
     <div class="master_container">
-        <div style="position: relative; top: 15rem; min-width: 250px; min-height: 250px; max-width: 436px; left: 44rem;">
+        <div style="position: relative; top: 15rem; min-width: 250px; min-height: 250px; max-width: 436px; left: 40rem;">
             <img src="assets\images\cookie.png" id="cookie" class="cookie" />
             <span id="main_text" class="main_text">A Cookie has appeard, click it!</span>
             <span id="score" class="score">0</span>
@@ -77,6 +106,62 @@
         let close_menu = document.getElementById("close_menu");
         let menu_icon = document.getElementById("menu_icon");
         let main_text = document.getElementById("main_text");
+        let user_icon = document.getElementById("user_icon");
+        let user_info = document.getElementById("user_info");
+
+        let username_span = document.getElementById("username_span");
+        let goals_span = document.getElementById("goals_span");
+
+        function organize_leaderboard() {
+
+            const usersRef = ref(database, 'users');
+
+            get(usersRef)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            const item = data[key];
+                            
+                            add_player_to_leaderboard(item.username, item.score, item.objectives);
+
+                            console.log(item);
+                        }
+                    }
+                } else {
+                    console.log("Nenhum dado encontrado no nó 'score'");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+
+        function add_player_to_leaderboard(player_name, player_scores, player_goals) {
+
+            let newObjective = document.createElement('li');
+            newObjective.className = "player";
+
+            let player_name_span = document.createElement('span');
+            player_name_span.textContent = player_name;
+            player_name_span.className = "player_name";
+
+            let br1 = document.createElement('br');
+
+            let player_scores_span = document.createElement('span');
+            player_scores_span.textContent = "Score: "+player_scores;
+            player_scores_span.className = "player_data_scoreboard";
+
+            let br2 = document.createElement('br');
+
+            let player_goals_span = document.createElement('span');
+            player_goals_span.textContent = "Goals: "+player_goals;
+            player_goals_span.className = "player_data_scoreboard";
+
+            newObjective.appendChild(text_content);
+            document.getElementById("leaderbord").appendChild(newObjective);
+        }
 
         auth.onAuthStateChanged(function(user) {
             get(child(ref(database), "users/" + user.uid))
@@ -85,6 +170,9 @@
                     score = snapshot.val().score;
                     multiplier = snapshot.val().objectives;
                     USERNAME = snapshot.val().username;
+
+                    username_span.textContent = USERNAME;
+                    goals_span.textContent = multiplier;
 
                     score_text.textContent = score;
 
@@ -100,7 +188,6 @@
                                 let element = elements[i];
                                 if (score_cache >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
                                     element.classList.add("completed");
-                                    let console_text = element.firstChild.textContent + " - completed";
                                 }
                             }
                             if (i == value_m - 1) {
@@ -122,6 +209,7 @@
                 var error_message = error.message;
 
                 alert(error_message);
+                console.log(error_message);
             });
         });
 
@@ -134,7 +222,6 @@
                     };
 
                     update(ref(database, 'users/'+user.uid), postData)
-                    console.log(user.uid);
                 } else {
                     // User not logged in or has just logged out.
                 }
@@ -150,12 +237,13 @@
                     };
 
                     update(ref(database, 'users/'+user.uid), postData)
-                    console.log(user.uid);
                 } else {
                     console.log("no user");
                 }
             });
         }
+
+        organize_leaderboard();
 
         document.onmousemove = getMousePos;
 
@@ -209,6 +297,14 @@
             if (canSendData) update_score();
         }
 
+        function open_user_info() {
+            if (user_info.style.visibility == "hidden") {
+                user_info.style.visibility = "visible";
+            } else {
+                user_info.style.visibility = "hidden";
+            }
+        }
+
         let clickC = event => { 
             clickCookie();
         }
@@ -217,6 +313,11 @@
             open_sidebar();
         }
 
+        let openU = event => { 
+            open_user_info();
+        }
+
+        user_icon.addEventListener("click", openU);
         cookie.addEventListener("click", clickC);
         close_menu.addEventListener("click", openS);
         menu_icon.addEventListener("click", openS);

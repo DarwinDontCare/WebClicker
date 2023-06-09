@@ -22,13 +22,6 @@ input {
     bottom: 2rem;
 }
 
-.login_title {
-    position: relative;
-
-    font-size: xx-large;
-    bottom: 2rem;
-}
-
 .login_container {
     position: fixed;
     text-align: center;
