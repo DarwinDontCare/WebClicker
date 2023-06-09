@@ -8,6 +8,7 @@ body {
 
 .cookie_container {
     cursor: pointer;
+
     position: relative;
     text-align: center;
 
@@ -17,7 +18,7 @@ body {
     padding: 13px;
     display: inline-block;
 
-    top: 25%;
+    top: 15rem;
 }
 
 .master_container {
@@ -100,6 +101,11 @@ body {
 
 .cookie {
     cursor: pointer;
+
+    position: relative;
+
+    height: auto;
+    width: auto;
 
     animation: grow 0.4s linear;
 }

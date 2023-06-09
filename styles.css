@@ -74,7 +74,17 @@ input {
 
 #log{
     cursor: pointer;
-    width: 300px;
+    width: 150px;
+    height: 30px;
+    border: none;
+    border-radius: 17px;
+    padding-left: 7px;
+    color:white;
+}
+
+#register_redirect {
+    cursor: pointer;
+    width: 150px;
     height: 30px;
     border: none;
     border-radius: 17px;

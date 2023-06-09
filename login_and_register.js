@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getDatabase, ref, set, child, update, remove } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+import { getDatabase, ref, set, child, update, remove, push } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
 var firebaseConfig = {
     apiKey: "AIzaSyBEdjIqnp-pYXlam8-xqb2HoUSsZC38oR8",
@@ -67,6 +67,10 @@ function register_user() {
     });
 }
 
+function redirect_to_register() {
+    window.open("cookie_register.html",'_self');
+}
+
 function validate_email(email) {
     let expression = /^[^@]+@\w+(\.\w+)+\w$/;
     if (expression.test(email)) {
@@ -124,12 +128,23 @@ function login_user() {
 
         var user = userCredential.user;
 
-        set(ref(database, 'users/' + user.uid), {
+        // A post entry.
+        const postData = {
             last_login : Date.now()
-        }).then(() => {
+        };
+
+        // Write the new post's data simultaneously in the posts list and the user's post list.
+        update(ref(database, 'users/'+user.uid), postData)
+        .then(() => {
             alert("successfuly loged in!");
+            console.log(user.uid);
 
             window.open("cookie_site.html",'_self');
+        }).catch(function(error) {
+            var error_code = error.code;
+            var error_message = error.message;
+    
+            alert(error_message);
         });
 
     })
@@ -151,6 +166,12 @@ let register = event => {
 
 try {
     document.getElementById('log').addEventListener("click", login);
+}catch {
+
+}
+
+try {
+    document.getElementById('register_redirect').addEventListener("click", redirect_to_register);
 }catch {
 
 }
