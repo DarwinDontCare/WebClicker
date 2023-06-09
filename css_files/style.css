@@ -90,11 +90,11 @@ label {
 }
 
 .completed {
-    list-style-image: url('assets/images/checkbox-checked-regular-24.png');
+    list-style-image: url('../assets/images/checkbox-checked-regular-24.png');
 }
 
 .objectives_list {
-    list-style-image: url('assets/images/checkbox-regular-24.png');
+    list-style-image: url('../assets/images/checkbox-regular-24.png');
 }
 
 .leaderbord {

@@ -56,7 +56,7 @@ function register_user() {
         }).then(() => {
             alert("user created!");
 
-            window.open("cookie_site.html",'_self');
+            window.open("index.html",'_self');
         });
     })
     .catch(function(error) {
@@ -139,7 +139,7 @@ function login_user() {
             alert("successfuly loged in!");
             console.log(user.uid);
 
-            window.open("cookie_site.html",'_self');
+            window.open("index.html",'_self');
         }).catch(function(error) {
             var error_code = error.code;
             var error_message = error.message;
