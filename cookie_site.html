@@ -20,12 +20,15 @@
             </ul>
         </div>
     </div>
-    <div id="cookie_container" class="cookie_container">
-        <img src="assets\images\cookie.png" id="cookie" class="cookie">
-            <span id="main_text" class="main_text">A Cookie has appeard, click it!</span>
-            <span id="score" class="score">0</span>
-        </img>
+    <div class="master_container">
+        <div id="cookie_container" class="cookie_container">
+            <img src="assets\images\cookie.png" id="cookie" class="cookie">
+                <span id="main_text" class="main_text">A Cookie has appeard, click it!</span>
+                <span id="score" class="score">0</span>
+            </img>
+        </div>
     </div>
+    
     
     <script type="module">
         // Import the functions you need from the SDKs you need
@@ -69,20 +72,22 @@
 
         auth.onAuthStateChanged(function(user) {
 
-            const scoreRef = ref(database, 'users/' + user.uid + '/score');
-            const objectivesRef = ref(database, 'users/' + user.uid + '/objectives');
-            const usernameRef = ref(database, 'users/' + user.uid + '/username');
-            onValue(scoreRef, (snapshot) => {
-                score = snapshot.val().score || 0;
-            });
-            onValue(objectivesRef, (snapshot) => {
-                multiplier = snapshot.val().objectives || 0;
-            });
-            onValue(usernameRef, (snapshot) => {
-                USERNAME = snapshot.val().username || "Anonymous";
-            });
+            try {
+                const scoreRef = ref(database, 'users/' + user.uid + '/score');
+                const objectivesRef = ref(database, 'users/' + user.uid + '/objectives');
+                const usernameRef = ref(database, 'users/' + user.uid + '/username');
+                onValue(scoreRef, (snapshot) => {
+                    score = snapshot.val().score || 0;
+                });
+                onValue(objectivesRef, (snapshot) => {
+                    multiplier = snapshot.val().objectives || 0;
+                });
+                onValue(usernameRef, (snapshot) => {
+                    USERNAME = snapshot.val().username || "Anonymous";
+                });
 
-            console.log(USERNAME, multiplier, score);
+                console.log(USERNAME, multiplier, score);
+            } catch {}
 
         });
 
@@ -138,6 +143,7 @@
         let sidebar = document.getElementById("sidebar");
         let close_menu = document.getElementById("close_menu");
         let menu_icon = document.getElementById("menu_icon");
+        let main_text = document.getElementById("main_text");
 
         document.onmousemove = getMousePos;
 
