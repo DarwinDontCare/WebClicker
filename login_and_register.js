@@ -51,13 +51,13 @@ function register_user() {
             email : email_input,
             username : username_input,
             score : 0,
-            objectives : 0,
+            objectives : 1,
             last_login : Date.now()
+        }).then(() => {
+            alert("user created!");
+
+            window.open("cookie_site.html",'_self');
         });
-
-        alert("user created!");
-
-        window.open("cookie_site.html",'_self');
     })
     .catch(function(error) {
         var error_code = error.code;
@@ -126,11 +126,11 @@ function login_user() {
 
         set(ref(database, 'users/' + user.uid), {
             last_login : Date.now()
+        }).then(() => {
+            alert("successfuly loged in!");
+
+            window.open("cookie_site.html",'_self');
         });
-
-        alert("successfuly loged in!");
-
-        window.open("cookie_site.html",'_self');
 
     })
     .catch(function(error) {

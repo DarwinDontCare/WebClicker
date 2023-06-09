@@ -8,10 +8,13 @@ body {
 
 .cookie_container {
     cursor: pointer;
-
     position: absolute;
-    top: 20%;
-    left: 40%;
+    text-align: center;
+
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
 
 .menu_icon {
@@ -82,6 +85,13 @@ body {
 .cookie {
     cursor: pointer;
 
+    text-align: center;
+    align-items: center;
+
+    position: relative;
+
+    top: 25%;
+
     animation: grow 0.4s linear;
 }
 
@@ -101,7 +111,7 @@ body {
 }
 
 .main_text {
-    position: absolute;
+    position: relative;
 
     text-align: center;
 
@@ -110,8 +120,8 @@ body {
 
     -webkit-text-fill-color: white;
 
-    top: 110%;
-    left: 15%;
+    top: 30%;
+    right: 18.5%;
 
     overflow: hidden;
     border-right: .15em solid rgba(255, 166, 0, 0.719);
@@ -133,24 +143,28 @@ body {
 }
 
 .score {
-    position: absolute;
+    position: relative;
 
     text-align: center;
 
     font-family: "Arial";
 
-    font-size: larger;
+    font-size: xx-large;
 
     -webkit-text-fill-color: white;
 
-    top: -10%;
-    left: 50%;
+    right: 18.5%;
+    top: 2%;
 }
 
 .cookie_clicked {
     cursor: pointer;
 
     --current-rotation : 0deg;
+
+    position: relative;
+
+    top: 25%;
 
     animation: click 0.2s linear;
 }
@@ -169,14 +183,32 @@ body {
     0% {
         transform: scale(1);
         rotate : var(--current-rotation);
+        text-align: center;
+        align-items: center;
+
+        position: relative;
+
+        top: 25%;
     } 
     10% {
         transform: scale(1.1);
         rotate : var(--current-rotation);
+        text-align: center;
+        align-items: center;
+
+        position: relative;
+
+        top: 25%;
     }
     100% {
         transform: scale(1);
         rotate : var(--current-rotation);
+        text-align: center;
+        align-items: center;
+
+        position: relative;
+
+        top: 25%;
     }
 }
 

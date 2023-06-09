@@ -8,10 +8,10 @@
     <title>Funny Clicker</title>
 </head>
 <body>
-    <img id="menu_icon" class="menu_icon" src="assets\images\menu-regular-24.png" onclick="open_sidebar()"></img>
+    <img id="menu_icon" class="menu_icon" src="assets\images\menu-regular-24.png"></img>
     <div id="sidebar" class="sidebar">
         <span id="menu_text" class="menu_text">Objectives</span>
-        <img id="close_menu" class="close_menu" src="assets\images\x-regular-24.png" onclick="open_sidebar()"></img>
+        <img id="close_menu" class="close_menu" src="assets\images\x-regular-24.png"></img>
         <div id="content_holder" class="content_holder">
             <ul id="objectives_list" class="objectives_list">
                 <li id="objective" class="objective" value="50">
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div id="cookie_container" class="cookie_container">
-        <img src="assets\images\cookie.png" id="cookie" onclick="clickCookie()" class="cookie">
+        <img src="assets\images\cookie.png" id="cookie" class="cookie">
             <span id="main_text" class="main_text">A Cookie has appeard, click it!</span>
             <span id="score" class="score">0</span>
         </img>
@@ -29,9 +29,10 @@
     
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
-        import { getDatabase } from "https://cookiesite-e1b9c-default-rtdb.firebaseio.com/";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+        import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
       
@@ -50,15 +51,93 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const auth = getAuth();
 
         const database = getDatabase(app);
-    </script>
 
-    <script>
+        let login = event => { 
+            login_user();
+        }
+
+        let register = event => { 
+            register_user();
+        }
+
+        let score = 0;
+        let multiplier = 1;
+        let USERNAME = "Anonimus";
+
+        auth.onAuthStateChanged(function(user) {
+
+            const scoreRef = ref(database, 'users/' + user.uid + '/score');
+            const objectivesRef = ref(database, 'users/' + user.uid + '/objectives');
+            const usernameRef = ref(database, 'users/' + user.uid + '/username');
+            onValue(scoreRef, (snapshot) => {
+                score = snapshot.val().score || 0;
+            });
+            onValue(objectivesRef, (snapshot) => {
+                multiplier = snapshot.val().objectives || 0;
+            });
+            onValue(usernameRef, (snapshot) => {
+                USERNAME = snapshot.val().username || "Anonymous";
+            });
+
+            console.log(USERNAME, multiplier, score);
+
+        });
+
+        function update_score() {
+            auth.onAuthStateChanged(function(user) {
+                if (user) {
+                    // A post entry.
+                    const postData = {
+                        objectives : multiplier
+                    };
+
+                    // Get a key for a new Post.
+                    const newPostKey = push(child(ref(database), 'objectives')).key;
+
+                    // Write the new post's data simultaneously in the posts list and the user's post list.
+                    const updates = {};
+                    updates['/users/' + newPostKey] = postData;
+                    updates['/users/' + user.uid + '/' + newPostKey] = postData;
+                    update(ref(database), updates);
+                    console.log(user.uid);
+                } else {
+                    // User not logged in or has just logged out.
+                }
+            });
+        }
+
+        function update_objective() {   
+            auth.onAuthStateChanged(function(user) {
+                if (user) {
+                    // A post entry.
+                    const postData = {
+                        score : score
+                    };
+
+                    // Get a key for a new Post.
+                    const newPostKey = push(child(ref(database), 'score')).key;
+
+                    // Write the new post's data simultaneously in the posts list and the user's post list.
+                    const updates = {};
+                    updates['/users/' + newPostKey] = postData;
+                    updates['/users/' + user.uid + '/' + newPostKey] = postData;
+                    update(ref(database), updates);
+                    console.log(user.uid);
+                } else {
+                    // User not logged in or has just logged out.
+                }
+            });
+        }
+
         let cookie = document.getElementById('cookie');
         let cookie_container = document.getElementById('cookie_container');
         let score_text = document.getElementById('score');
         let sidebar = document.getElementById("sidebar");
+        let close_menu = document.getElementById("close_menu");
+        let menu_icon = document.getElementById("menu_icon");
 
         document.onmousemove = getMousePos;
 
@@ -66,9 +145,13 @@
 
         let mousePos = null;
 
-        let multiplier = 1;
-
-        let score = 0;
+        if (multiplier > 1) {
+            let score_cache = 50;
+            for(let i = 1; i < multiplier; i++) {
+                generateObjectives(score_cache, multiplier);
+                score_cache = score_cache + (50 * i);
+            }
+        }
 
         let timeoutID = null;
 
@@ -97,7 +180,9 @@
                 if (score >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
                     element.classList.add("completed");
                     let console_text = element.firstChild.textContent + " - completed";
+                    multiplier++;
                     console.log(console_text)
+                    update_objective();
                     generateObjectives(score, multiplier);
                 }
             }
@@ -112,7 +197,20 @@
             click_audio.currentTime = 0.4;
             click_audio.play();
             pop()
+            update_score();
         }
+
+        let clickC = event => { 
+            clickCookie();
+        }
+
+        let openS = event => { 
+            open_sidebar();
+        }
+
+        cookie.addEventListener("click", clickC);
+        close_menu.addEventListener("click", openS);
+        menu_icon.addEventListener("click", openS);
 
         function getMousePos (event) {
             mousePos = event;
