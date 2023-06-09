@@ -6,20 +6,29 @@ body {
     );
 }
 
-.cookie_container {
-    cursor: pointer;
-
-    position: relative;
-    text-align: center;
-
-    min-width: 250px;
-    min-height: 250px;
-    max-width: 436px;
-    padding: 13px;
-    display: inline-block;
-
-    top: 15rem;
+span {
+    pointer-events: none;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(175, 128, 97);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(112, 73, 47);;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(90, 64, 45);
+  }
 
 .master_container {
     position: absolute;
@@ -41,6 +50,18 @@ body {
 
     top: 1rem;
     left: 1rem;
+}
+
+.user_icon {
+    position: absolute;
+    cursor: pointer;
+    z-index: 100;
+
+    height: 2.5rem;
+    width: 2.5rem;
+
+    top: 1rem;
+    right: 1rem;
 }
 
 .close_menu {
@@ -137,7 +158,7 @@ body {
     -webkit-text-fill-color: white;
 
     top: 28rem;
-    left: 5rem;
+    left: 4rem;
 
     overflow: hidden;
     border-right: .15em solid rgba(255, 166, 0, 0.719);
