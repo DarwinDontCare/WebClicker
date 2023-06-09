@@ -23,19 +23,6 @@
         <br><br>
         <div id="leaderbord_holder" class="leaderbord_holder">
             <ul id="leaderbord" class="leaderbord">
-                <li id="player" class="player">
-                    <span id="player_name" class="player_name">Anonymus</span>
-                    <br><br>
-                    <label>
-                        <b>Score: </b>
-                    </label>
-                    <span id="player_score" class="player_score">0</span>
-                    <br><br>
-                    <label>
-                        <b>Goals: </b>
-                    </label>
-                    <span id="completed_goals" class="completed_goals">0</span>
-                </li>
             </ul>
         </div>
     </div>
@@ -112,7 +99,20 @@
         let username_span = document.getElementById("username_span");
         let goals_span = document.getElementById("goals_span");
 
-        function organize_leaderboard() {
+        async function update_current_user_leaderboard() {
+            let elements = document.getElementsByClassName("player")
+
+            for (let i = 0; i < elements.length; i++) {
+                let element = elements[i];
+                if (element.getElementsByClassName("player_name")[0].textContent == USERNAME) {
+                    element.getElementsByClassName("player_data_scores")[0].textContent = "Score: "+score;
+                    element.getElementsByClassName("player_data_goals")[0].textContent = "Goals: "+multiplier;
+                    return;
+                }
+            }
+        }
+
+        async function organize_leaderboard() {
 
             const usersRef = ref(database, 'users');
 
@@ -123,10 +123,19 @@
                     for (let key in data) {
                         if (data.hasOwnProperty(key)) {
                             const item = data[key];
+
+                            let elements = document.getElementsByClassName("player");
+
+                            for (let i = 0; i < elements.length; i++) {
+                                let element = elements[i];
+                                if (element.getElementsByClassName("player_name")[0].textContent == item.username) {
+                                    element.getElementsByClassName("player_data_scores")[0].textContent = "Score: "+item.score;
+                                    element.getElementsByClassName("player_data_goals")[0].textContent = "Goals: "+item.objectives;
+                                    return;
+                                }
+                            }
                             
                             add_player_to_leaderboard(item.username, item.score, item.objectives);
-
-                            console.log(item);
                         }
                     }
                 } else {
@@ -138,7 +147,7 @@
             });
         }
 
-        function add_player_to_leaderboard(player_name, player_scores, player_goals) {
+        async function add_player_to_leaderboard(player_name, player_scores, player_goals) {
 
             let newObjective = document.createElement('li');
             newObjective.className = "player";
@@ -151,15 +160,19 @@
 
             let player_scores_span = document.createElement('span');
             player_scores_span.textContent = "Score: "+player_scores;
-            player_scores_span.className = "player_data_scoreboard";
+            player_scores_span.className = "player_data_scores";
 
             let br2 = document.createElement('br');
 
             let player_goals_span = document.createElement('span');
             player_goals_span.textContent = "Goals: "+player_goals;
-            player_goals_span.className = "player_data_scoreboard";
+            player_goals_span.className = "player_data_goals";
 
-            newObjective.appendChild(text_content);
+            newObjective.appendChild(player_name_span);
+            newObjective.appendChild(br1);
+            newObjective.appendChild(player_scores_span);
+            newObjective.appendChild(br2);
+            newObjective.appendChild(player_goals_span);
             document.getElementById("leaderbord").appendChild(newObjective);
         }
 
@@ -176,26 +189,8 @@
 
                     score_text.textContent = score;
 
-                    if (multiplier > 1) {
-                        let score_cache = 50;
-                        let value_m = multiplier;
-                        for(let i = 1; i < value_m; i++) {
-                            generateObjectives(score_cache, i);
-
-                            let elements = document.getElementsByClassName("objective")
-
-                            for (let i = 0; i < elements.length; i++) {
-                                let element = elements[i];
-                                if (score_cache >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
-                                    element.classList.add("completed");
-                                }
-                            }
-                            if (i == value_m - 1) {
-                                multiplier++;
-                                generateObjectives(score_cache, multiplier);
-                            }
-                            score_cache = score_cache + (50 * i);
-                        }
+                    if (score > 50) {
+                        load_objcetives();
                     }
                     
                     canSendData = true;
@@ -213,7 +208,40 @@
             });
         });
 
-        function update_score() {
+        async function load_objcetives() {
+            let value_m = 2;
+            let value_score = 50;
+                        
+            while (true) {
+                if (score > value_score) {
+
+                    value_score += 50;
+                    
+                    let elements = document.getElementsByClassName("objective");
+
+                    for (let i = 0; i < elements.length; i++) {
+                        let element = elements[i];
+                        if (score >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
+                            element.classList.add("completed");
+                        }
+                    }
+
+                    generateObjectives(value_m);
+
+                    value_m++;
+
+                } else {
+                    multiplier = value_m;
+                    goals_span.textContent = multiplier;
+                    update_current_user_leaderboard();
+                    update_objective();
+                    console.log("finished loading objectives!");
+                    return;
+                }
+            }
+        }
+
+        async function update_score() {
             auth.onAuthStateChanged(function(user) {
                 if (user) {
                     // A post entry.
@@ -228,7 +256,7 @@
             });
         }
 
-        function update_objective() {   
+        async function update_objective() {   
             auth.onAuthStateChanged(function(user) {
                 if (user) {
                     // A post entry.
@@ -243,8 +271,6 @@
             });
         }
 
-        organize_leaderboard();
-
         document.onmousemove = getMousePos;
 
         let click_audio = new Audio('assets/audio/Menu Selection Sound Effec.mp4')
@@ -257,8 +283,6 @@
 
         let rotation_angle = 0;
 
-        //button.addEventListener("mouseenter")
-
         function remove_cookie_class() {
             cookie.classList.remove("cookie_clicked");
         }
@@ -270,19 +294,6 @@
         function clickCookie() {
             score++;
             score_text.textContent = score.toString();
-            
-            let elements = document.getElementsByClassName("objective")
-
-            for (let i = 0; i < elements.length; i++) {
-                let element = elements[i];
-                if (score >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
-                    element.classList.add("completed");
-                    let console_text = element.firstChild.textContent + " - completed";
-                    multiplier++;
-                    if (canSendData) update_objective();
-                    generateObjectives(score, multiplier);
-                }
-            }
 
             if (!cookie.classList.contains("cookie_clicked")) cookie.classList.add("cookie_clicked");
             if (cookie.classList.contains("cookie")) cookie.classList.remove("cookie");
@@ -295,6 +306,23 @@
             click_audio.play();
             pop()
             if (canSendData) update_score();
+            update_current_user_leaderboard();
+
+            check_objects();
+        }
+
+        async function check_objects() {
+            let elements = document.getElementsByClassName("objective");
+
+            for (var element in elements.length) {
+                if (score >= Number.parseInt(element.getAttribute("value")) && !element.classList.contains("completed")) {
+                    element.classList.add("completed");
+                    multiplier++;
+                    if (canSendData) update_objective();
+                    goals_span.textContent = multiplier;
+                    generateObjectives();
+                }
+            }
         }
 
         function open_user_info() {
@@ -332,8 +360,8 @@
             }
         }
 
-        function generateObjectives(score, multiplier) {
-            let objectiveValue = ( score + (50 * multiplier));
+        async function generateObjectives(value_m) {
+            let objectiveValue = (50 * value_m);
 
             let newObjective = document.createElement('li');
             newObjective.className = "objective";
@@ -399,7 +427,13 @@
 
         var intervalId = window.setInterval(function(){
             rotateCookie();
-        }, 10);   
+        }, 10); 
+        
+        organize_leaderboard();
+
+        var refreshScoreboardId = window.setInterval(function() {
+            organize_leaderboard();
+        }, 10000);   
 
     </script>
 </body>
