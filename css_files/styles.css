@@ -65,7 +65,7 @@ input {
     padding-left: 8px;
 }
 
-#log{
+#login{
     cursor: pointer;
     width: 150px;
     height: 30px;
@@ -85,7 +85,7 @@ input {
     color:white;
 }
 
-#register{
+#register, #send_reset_email{
     cursor: pointer;
     width: 300px;
     height: 30px;

@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getDatabase, ref, set, child, update, remove, push } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
@@ -15,63 +15,14 @@ var firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth();
+export const auth = getAuth();
 const database = getDatabase(app);
-
-function register_user() {
-    let email_input = document.getElementById("Email").value;
-    let username_input = document.getElementById("Username").value;
-    let password_input = document.getElementById("Password").value;
-    let confirm_password_input = document.getElementById("ConfirmPassword").value;
-
-    if (!validate_email(email_input) && !validate_password(password_input)) {
-        alert("invalid email and password");
-        return;
-    } else if (!validate_email(email_input)) {
-        alert("invalid email");
-        return;
-    } else if (!validate_password(password_input)) {
-        alert("invalid password");
-        return;
-    }
-
-    if (!compare_passwords(password_input, confirm_password_input)) {
-        alert("password and confirm password don't match");
-        return;
-    }
-
-    createUserWithEmailAndPassword(auth, email_input, password_input)
-    .then(function(userCredential) {
-
-        var user = userCredential.user;
-
-        console.log(user.uid);
-
-        set(ref(database, 'users/' + user.uid), {
-            email : email_input,
-            username : username_input,
-            score : 0,
-            objectives : 1,
-            last_login : Date.now()
-        }).then(() => {
-            alert("user created!");
-
-            window.open("cookie_site.html",'_self');
-        });
-    })
-    .catch(function(error) {
-        var error_code = error.code;
-        var error_message = error.message;
-
-        alert(error_message);
-    });
-}
 
 function redirect_to_register() {
     window.open("cookie_register.html",'_self');
 }
 
-function validate_email(email) {
+export function validate_email(email) {
     let expression = /^[^@]+@\w+(\.\w+)+\w$/;
     if (expression.test(email)) {
         return true;
@@ -80,7 +31,7 @@ function validate_email(email) {
     }
 }
 
-function validate_password(password) {
+export function validate_password(password) {
     if (password < 6) {
         return false;
     } 
@@ -92,7 +43,7 @@ function validate_password(password) {
     }
 }
 
-function compare_passwords(password, confirm_password) {
+export function compare_passwords(password, confirm_password) {
     if (password == confirm_password) {
         return true;
     } else {
@@ -100,12 +51,16 @@ function compare_passwords(password, confirm_password) {
     }
 }
 
-function validate_field(field) {
+export function validate_field(field) {
     if (field == null) {
         return false;
     } else {
         return true;
     }
+}
+
+function forgot_password() {
+    window.open("cookie_forgot_password.html",'_self');
 }
 
 function login_user() {
@@ -156,28 +111,14 @@ function login_user() {
     });
 }
 
-let login = event => { 
+let login = event => {
     login_user();
 }
 
-let register = event => { 
-    register_user();
-}
-
 try {
-    document.getElementById('log').addEventListener("click", login);
-}catch {
-
-}
-
-try {
+    document.getElementById('login').addEventListener("click", login);
     document.getElementById('register_redirect').addEventListener("click", redirect_to_register);
-}catch {
-
-}
-
-try {
-    document.getElementById('register').addEventListener("click", register);
-}catch {
-    
+    document.getElementById('redirect_forgot').addEventListener("click", forgot_password);
+}catch(error) {
+    console.log(error)
 }
